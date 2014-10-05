@@ -20,9 +20,6 @@ class MyService extends Service[UnfangledRequest, UnfangledResponse] {
   }
 
 
-  implicit def uresp2Future(r : UnfangledResponse )  = {
-    Future.value( r )
-  }
 
 
   def apply(req: UnfangledRequest): Future[UnfangledResponse] = {

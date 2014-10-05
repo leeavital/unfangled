@@ -4,6 +4,7 @@ import org.jboss.netty.handler.codec.http.{HttpVersion, DefaultHttpResponse, Htt
 import collection.mutable.Map
 import org.jboss.netty.buffer.ByteBufferBackedChannelBuffer
 import java.nio.ByteBuffer
+import com.twitter.util.Future
 
 /**
  * Created by lee on 10/4/14.
@@ -19,6 +20,7 @@ class UnfangledResponse(val content: Array[Byte], val status: HttpResponseStatus
     r.setContent(new ByteBufferBackedChannelBuffer(ByteBuffer.wrap(content)))
     r
   }
+
 }
 
 
@@ -28,5 +30,10 @@ object UnfangledResponse {
   def html(html: HtmlString, status: Status = HttpResponseStatus.OK) = {
     val bytes = html.s.getBytes
     new UnfangledResponse(bytes, status, Map("Content-Type" -> "text/html"))
+  }
+
+
+  implicit def toFuture(e : UnfangledResponse ) : Future[UnfangledResponse] = {
+    Future.value(e)
   }
 }

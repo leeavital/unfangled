@@ -30,5 +30,5 @@ dependencies {
 
 
 compileScala {
-    scalaCompileOptions.additionalParameters = ["-feature", "-deprecation"]
+    scalaCompileOptions.additionalParameters = ["-feature", "-deprecation", "-language:implicitConversions"]
 }
