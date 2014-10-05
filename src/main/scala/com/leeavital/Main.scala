@@ -23,11 +23,13 @@ class MyService extends Service[UnfangledRequest, UnfangledResponse] {
 
 
   def apply(req: UnfangledRequest): Future[UnfangledResponse] = {
-    val html = Templates.out(Map())
+    val html = Templates.out(Map("title"->"Hello world"))
 
     html match {
       case Return(html) => UnfangledResponse.html(html).toFuture
-      case Throw(e) => new UnfangledResponse("NO".getBytes).toFuture
+      case Throw(e) =>
+        println(e.getMessage)
+        new UnfangledResponse("NO".getBytes).toFuture
     }
 
   }

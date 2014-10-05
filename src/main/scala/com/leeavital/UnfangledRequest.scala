@@ -7,4 +7,7 @@ import org.jboss.netty.handler.codec.http.HttpRequest
  */
 class UnfangledRequest(val req: HttpRequest) {
 
+  def method = req.getMethod
+
+  def uri = req.getUri
 }

@@ -1,0 +1,7 @@
+<%@ var title: String  %>
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>${title}</title>
+     </head>
+     <body>

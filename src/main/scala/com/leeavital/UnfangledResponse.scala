@@ -15,9 +15,13 @@ class UnfangledResponse(val content: Array[Byte], val status: HttpResponseStatus
     headers.put(k, v)
   }
 
-  def toHttpResponse : HttpResponse = {
+  def toHttpResponse: HttpResponse = {
     val r: HttpResponse = new DefaultHttpResponse(HttpVersion.HTTP_1_1, status)
     r.setContent(new ByteBufferBackedChannelBuffer(ByteBuffer.wrap(content)))
+    headers.foreach {
+      case (k, v) =>
+        r.setHeader(k, v)
+    }
     r
   }
 
@@ -33,7 +37,7 @@ object UnfangledResponse {
   }
 
 
-  implicit def toFuture(e : UnfangledResponse ) : Future[UnfangledResponse] = {
+  implicit def toFuture(e: UnfangledResponse): Future[UnfangledResponse] = {
     Future.value(e)
   }
 }
