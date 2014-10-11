@@ -16,9 +16,3 @@ class UnfangledHttpFilter extends Filter[HttpRequest, HttpResponse, UnfangledReq
     service(unfangledRequest).map( _.toHttpResponse )
   }
 }
-
-
-
-
-
-

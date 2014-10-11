@@ -28,10 +28,10 @@ object Get {
 }
 
 object Seg {
-  def unapply(uri : String ) : Option[List[String]] = {
-    if(uri.startsWith("/")){
+  def unapply(uri: String): Option[List[String]] = {
+    if (uri.startsWith("/")) {
       Some(uri.tail.split("/").toList)
-    }else{
+    } else {
       Some(uri.split("/").toList)
     }
   }

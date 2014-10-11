@@ -1,10 +1,10 @@
-package com.leeavital.requests
+package com.leeavital
 
-import com.leeavital.UnfangledRequest
 import org.jboss.netty.handler.codec.http._
 import org.junit.runner.RunWith
 import org.scalatest.{Matchers, FlatSpec}
 import org.scalatest.junit.JUnitRunner
+import com.leeavital.requests.{Seg, Get, Post}
 
 /**
  * Created by lee on 10/5/14.
