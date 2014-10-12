@@ -1,18 +1,20 @@
 package com.leeavital.example
 
-import com.twitter.finagle.{Http, Service}
-import org.jboss.netty.handler.codec.http.{HttpResponseStatus, HttpRequest, HttpResponse}
-import com.twitter.util._
+import org.jboss.netty.handler.codec.http.HttpResponseStatus
 import com.leeavital.requests.GET
-import com.leeavital.{HtmlString, UnfangledResponse, Templates, Unfangled}
+import com.leeavital._
+import com.leeavital.HtmlString
+import com.twitter.util.Throw
+import com.twitter.util.Return
 
 object Main extends App {
-  Unfangled.serve( MyServer.pf, port=5000 )
+  Unfangled.serve(MyServer.pf, port = 5000)
 }
 
-object MyServer extends  {
 
-  val pf : Unfangled.Server  = {
+object MyServer extends {
+
+  val pf: Unfangled.Server = {
     case GET(uri) =>
       val html = Templates.out(Map("title" -> uri.toUpperCase()))
 
