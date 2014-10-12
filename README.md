@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/leeavital/unfanged.svg?branch=master)](https://travis-ci.org/leeavital/unfanged)
+
+
 unfangled
 ========
 
