@@ -44,6 +44,11 @@ object UnfangledResponse {
   }
 
 
+  def json(json: JsonString, status: Status = HttpResponseStatus.OK ) = {
+    val channelBuffer = ChannelBufferHelper.create(json.s)
+    new UnfangledResponse(channelBuffer, status, Map("Content-Type" -> "application/json"))
+  }
+
   implicit def toFuture(e: UnfangledResponse): Future[UnfangledResponse] = {
     Future.value(e)
   }
