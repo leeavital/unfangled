@@ -12,12 +12,6 @@ object Main extends App {
 
 object MyServer extends  {
 
-  implicit class Futurable[T](e :T ) {
-    def toFuture: Future[T] = {
-      Future.value(e)
-    }
-  }
-
   val pf : Unfangled.Server  = {
     case Get(uri) =>
       val html = Templates.out(Map("title" -> uri.toUpperCase()))

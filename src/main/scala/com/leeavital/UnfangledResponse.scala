@@ -27,6 +27,11 @@ class UnfangledResponse(val content: ChannelBuffer, val status: HttpResponseStat
     r
   }
 
+
+  def toFuture = {
+    Future.value(this)
+  }
+
 }
 
 
