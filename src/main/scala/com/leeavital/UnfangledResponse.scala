@@ -5,6 +5,7 @@ import collection.mutable.Map
 import org.jboss.netty.buffer.ByteBufferBackedChannelBuffer
 import java.nio.ByteBuffer
 import com.twitter.util.Future
+import com.leeavital.util.ChannelBufferHelper
 
 /**
  * Created by lee on 10/4/14.
@@ -17,7 +18,8 @@ class UnfangledResponse(val content: Array[Byte], val status: HttpResponseStatus
 
   def toHttpResponse: HttpResponse = {
     val r: HttpResponse = new DefaultHttpResponse(HttpVersion.HTTP_1_1, status)
-    r.setContent(new ByteBufferBackedChannelBuffer(ByteBuffer.wrap(content)))
+    val channelBufferedContent = ChannelBufferHelper.create(content)
+    r.setContent(channelBufferedContent)
     headers.foreach {
       case (k, v) =>
         r.setHeader(k, v)
