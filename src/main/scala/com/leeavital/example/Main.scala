@@ -3,7 +3,7 @@ package com.leeavital.example
 import com.twitter.finagle.{Http, Service}
 import org.jboss.netty.handler.codec.http.{HttpResponseStatus, HttpRequest, HttpResponse}
 import com.twitter.util._
-import com.leeavital.requests.Get
+import com.leeavital.requests.GET
 import com.leeavital.{HtmlString, UnfangledResponse, Templates, Unfangled}
 
 object Main extends App {
@@ -13,7 +13,7 @@ object Main extends App {
 object MyServer extends  {
 
   val pf : Unfangled.Server  = {
-    case Get(uri) =>
+    case GET(uri) =>
       val html = Templates.out(Map("title" -> uri.toUpperCase()))
 
       html match {

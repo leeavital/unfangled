@@ -4,7 +4,7 @@ import org.jboss.netty.handler.codec.http._
 import org.junit.runner.RunWith
 import org.scalatest.{Matchers, FlatSpec}
 import org.scalatest.junit.JUnitRunner
-import com.leeavital.requests.{Seg, Get, Post}
+import com.leeavital.requests.{Path, GET, POST}
 
 /**
  * Created by lee on 10/5/14.
@@ -18,7 +18,7 @@ class RequestUnapplySpec extends FlatSpec with Matchers {
     val unfangledRequest = new UnfangledRequest(respRaw)
 
     unfangledRequest match {
-      case Post(s) => s should be("/foo")
+      case POST(s) => s should be("/foo")
       case _ => fail("Nothing")
     }
   }
@@ -28,7 +28,7 @@ class RequestUnapplySpec extends FlatSpec with Matchers {
     val unfangledRequest = new UnfangledRequest(respRaw)
 
     unfangledRequest match {
-      case Get(s) => s should be("/foo")
+      case GET(s) => s should be("/foo")
       case _ => fail("Nothing")
     }
   }
@@ -36,11 +36,11 @@ class RequestUnapplySpec extends FlatSpec with Matchers {
   "Seg" should "unapply" in {
     val uri: String = "foo/bar"
 
-    val foo: Option[List[String]] = Seg.unapply(uri)
+    val foo: Option[List[String]] = Path.unapply(uri)
     foo should be(Some(Seq("foo", "bar")))
 
     uri match {
-      case Seg("foo" :: "bar" :: Nil) =>
+      case Path("foo" :: "bar" :: Nil) =>
       case x => fail("Did not unapply")
     }
   }
@@ -48,22 +48,22 @@ class RequestUnapplySpec extends FlatSpec with Matchers {
   it should "unapply with an initial slash" in {
     val uri: String = "/foo/bar"
 
-    val foo: Option[List[String]] = Seg.unapply(uri)
+    val foo: Option[List[String]] = Path.unapply(uri)
     foo should be(Some(Seq("foo", "bar")))
 
     uri match {
-      case Seg("foo" :: "bar" :: Nil) =>
+      case Path("foo" :: "bar" :: Nil) =>
       case x => fail("Did not unapply")
     }
   }
 
   it should "unapply with a trailing slash" in {
     val uri: String = "foo/bar/"
-    val foo = Seg.unapply(uri)
+    val foo = Path.unapply(uri)
     foo should be(Some(Seq("foo", "bar")))
 
     uri match {
-      case Seg("foo" :: "bar" :: Nil) =>
+      case Path("foo" :: "bar" :: Nil) =>
       case _ => fail("Did not unapply")
     }
   }
@@ -73,7 +73,7 @@ class RequestUnapplySpec extends FlatSpec with Matchers {
     val unfangledRequest = new UnfangledRequest(respRaw)
 
     unfangledRequest match {
-      case Post(Seg("foo"::"bar" :: baz :: Nil)) => baz should be("baz")
+      case POST(Path("foo"::"bar" :: baz :: Nil)) => baz should be("baz")
       case _ => fail("Nothing")
     }
   }
