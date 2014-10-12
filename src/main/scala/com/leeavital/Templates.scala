@@ -12,7 +12,7 @@ object Templates {
   engine.resourceLoader = new FileResourceLoader {
     override def resource(uri: String): Option[Resource] = {
       for {
-        resourceURL <- ClassLoaders.findResource("./templates/" + uri)
+        resourceURL <- ClassLoaders.findResource("templates/" + uri)
       } yield Resource.fromURL(resourceURL)
     }
   }
