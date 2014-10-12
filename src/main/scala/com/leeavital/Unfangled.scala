@@ -1,8 +1,9 @@
 package com.leeavital
 
-import com.twitter.util.{Await, Future}
+import com.twitter.util._
 import com.twitter.finagle.{Http, Service}
-import org.jboss.netty.handler.codec.http.{HttpResponse, HttpRequest}
+import org.jboss.netty.handler.codec.http.{HttpResponseStatus, HttpResponse, HttpRequest}
+import com.twitter.util.Return
 
 /**
  * Created by lee on 10/11/14.
@@ -14,14 +15,21 @@ object Unfangled {
 
   type Server = PartialFunction[UnfangledRequest, Future[UnfangledResponse]]
 
+  lazy val internalServerError =  UnfangledResponse.html(HtmlString("Internal Server Error"), HttpResponseStatus.INTERNAL_SERVER_ERROR)
+
   def serve( serve: PartialFunction[UnfangledRequest, Future[UnfangledResponse]], port : Int = 8080) = {
     // create a new finagled service
     val service : Service[HttpRequest, HttpResponse] = (new UnfangledHttpFilter) andThen new Service[UnfangledRequest, UnfangledResponse]  {
-      def apply(request: UnfangledRequest): Future[UnfangledResponse] = serve(request)
+      def apply(request: UnfangledRequest): Future[UnfangledResponse] = Try(serve(request)) match {
+        case Return(resp) => resp
+        case Throw(e) =>
+          println("Failed " + e.getMessage)
+          Future.value(internalServerError )
+      }
     }
+
 
     val httpServer = Http.serve(":" + port, service )
     Await.ready(httpServer)
-
   }
 }

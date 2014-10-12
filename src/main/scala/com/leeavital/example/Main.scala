@@ -1,22 +1,21 @@
 package com.leeavital.example
 
 import org.jboss.netty.handler.codec.http.HttpResponseStatus
-import com.leeavital.requests.GET
+import com.leeavital.requests.{Path, GET}
 import com.leeavital._
 import com.leeavital.HtmlString
 import com.twitter.util.Throw
 import com.twitter.util.Return
 
 object Main extends App {
-  Unfangled.serve(MyServer.pf, port = 5000)
+  Unfangled.serve( ((MyServer.pf) orElse (StaticServer.serve("webapp"))) ,  port = 5000)
 }
-
 
 object MyServer extends {
 
   val pf: Unfangled.Server = {
-    case GET(uri) =>
-      val html = Templates.out(Map("title" -> uri.toUpperCase()))
+    case GET(Path("hello" :: name :: Nil)) =>
+      val html = Templates.out(Map("title" -> s"Hello ${name}" ))
 
       html match {
         case Return(html) => UnfangledResponse.html(html).toFuture
