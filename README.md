@@ -1,7 +1,7 @@
-[![Build Status](https://travis-ci.org/leeavital/unfanged.svg?branch=master)](https://travis-ci.org/leeavital/unfanged)
+[![Build Status](https://travis-ci.org/leeavital/unfangled.svg?branch=master)](https://travis-ci.org/leeavital/unfangled)
 
 
-unfangled
+Unfangled
 ========
 
 An attempt to wrap the unfiltered API on top of Finagle
