@@ -12,6 +12,8 @@ import org.jboss.netty.handler.codec.http.{HttpResponse, HttpRequest}
  */
 object Unfangled {
 
+  type Server = PartialFunction[UnfangledRequest, Future[UnfangledResponse]]
+
   def serve( serve: PartialFunction[UnfangledRequest, Future[UnfangledResponse]], port : Int = 8080) = {
     // create a new finagled service
     val service : Service[HttpRequest, HttpResponse] = (new UnfangledHttpFilter) andThen new Service[UnfangledRequest, UnfangledResponse]  {
