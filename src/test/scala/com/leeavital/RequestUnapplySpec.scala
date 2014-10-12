@@ -4,7 +4,8 @@ import org.jboss.netty.handler.codec.http._
 import org.junit.runner.RunWith
 import org.scalatest.{Matchers, FlatSpec}
 import org.scalatest.junit.JUnitRunner
-import com.leeavital.requests.{Path, GET, POST}
+import com.leeavital.requests._
+import scala.Some
 
 /**
  * Created by lee on 10/5/14.
@@ -13,7 +14,7 @@ import com.leeavital.requests.{Path, GET, POST}
 class RequestUnapplySpec extends FlatSpec with Matchers {
 
 
-  "Post" should "unapply" in {
+  "POST" should "unapply" in {
     val respRaw: HttpRequest = new DefaultHttpRequest(HttpVersion.HTTP_1_0, HttpMethod.POST, "/foo")
     val unfangledRequest = new UnfangledRequest(respRaw)
 
@@ -23,12 +24,34 @@ class RequestUnapplySpec extends FlatSpec with Matchers {
     }
   }
 
-  "Get" should "unapply" in {
+  "GET" should "unapply" in {
     val respRaw: HttpRequest = new DefaultHttpRequest(HttpVersion.HTTP_1_0, HttpMethod.GET, "/foo")
     val unfangledRequest = new UnfangledRequest(respRaw)
 
     unfangledRequest match {
       case GET(s) => s should be("/foo")
+      case _ => fail("Nothing")
+    }
+  }
+
+  "DELETE" should "unapply" in {
+    val respRaw = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.DELETE, "/bar")
+
+    val unfangledRequest = new UnfangledRequest(respRaw)
+
+    unfangledRequest match {
+      case DELETE(s) => s should be("/bar")
+      case _ => fail("Nothing")
+    }
+  }
+
+  "PUT" should "unapply" in {
+    val respRaw = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.PUT, "/bar")
+
+    val unfangledRequest = new UnfangledRequest(respRaw)
+
+    unfangledRequest match {
+      case PUT(s) => s should be("/bar")
       case _ => fail("Nothing")
     }
   }

@@ -29,6 +29,28 @@ object GET {
   }
 }
 
+object PUT {
+  def unapply(req: UnfangledRequest) = {
+    if (req.method == HttpMethod.PUT) {
+      Some(req.uri)
+    } else {
+      None
+    }
+  }
+
+}
+
+
+object DELETE {
+  def unapply(req: UnfangledRequest) = {
+    if (req.method == HttpMethod.DELETE) {
+      Some(req.uri)
+    } else {
+      None
+    }
+  }
+}
+
 object Path {
   def unapply(uri: String): Option[List[String]] = {
     if (uri.startsWith("/")) {
