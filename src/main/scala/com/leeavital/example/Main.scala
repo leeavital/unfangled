@@ -18,7 +18,8 @@ object MyServer extends {
       val html = Templates.out(Map("title" -> s"Hello ${name}"))
 
       html match {
-        case Return(html) => UnfangledResponse.html(html).toFuture
+        // set a dummy cookie
+        case Return(html) => UnfangledResponse.html(html).cookie("session", "334232").toFuture
         case Throw(e) =>
           println(e.getMessage)
           UnfangledResponse.html(HtmlString("NOPE"), HttpResponseStatus.INTERNAL_SERVER_ERROR).toFuture

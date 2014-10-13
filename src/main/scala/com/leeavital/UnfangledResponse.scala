@@ -1,15 +1,18 @@
 package com.leeavital
 
-import org.jboss.netty.handler.codec.http.{HttpVersion, DefaultHttpResponse, HttpResponse, HttpResponseStatus}
+import org.jboss.netty.handler.codec.http._
 import collection.mutable.Map
 import org.jboss.netty.buffer.ChannelBuffer
 import com.twitter.util.Future
 import com.leeavital.util.ChannelBufferHelper
+import scala.collection.mutable
 
 /**
  * Created by lee on 10/4/14.
  */
 class UnfangledResponse(val content: ChannelBuffer, val status: HttpResponseStatus = HttpResponseStatus.OK, headers: Map[String, String] = Map()) {
+
+  val cookies = mutable.Set[Cookie]()
 
   def header(k: String, v: String) = {
     headers.put(k, v)
@@ -23,9 +26,27 @@ class UnfangledResponse(val content: ChannelBuffer, val status: HttpResponseStat
       case (k, v) =>
         r.setHeader(k, v)
     }
+
+    // take care of cookies
+    val cookieEncoder = new CookieEncoder(true)
+    cookies.map( cookieEncoder.addCookie )
+    r.setHeader("Set-Cookie", cookieEncoder.encode )
+
     r
   }
 
+  def cookie(c: Cookie) = {
+    cookies.add(c)
+    this
+  }
+
+  //TODO figure out sane defaults and add optional params
+  def cookie(name :String, value: String) = {
+    val c = new DefaultCookie(name, value)
+    c.setSecure(true)
+    cookies.add(c)
+    this
+  }
 
   def toFuture = {
     Future.value(this)
