@@ -14,6 +14,7 @@ class UnfangledRequestSpec extends FlatSpec with Matchers {
     val rawReq = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.PATCH, "/foo/bar/baz")
     rawReq.setHeader("Accept", "application/json")
     rawReq.setHeader("User-Agent", "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/21.0")
+    rawReq.setHeader("Cookie", "auth-token=7039; mycookie=4")
     rawReq.setContent(ChannelBufferHelper.create("FOOBAR"))
 
 
@@ -26,6 +27,15 @@ class UnfangledRequestSpec extends FlatSpec with Matchers {
     unfangledReq.header("Timeout") should be(None)
     unfangledReq.body should be("FOOBAR")
     unfangledReq.bytes.toList should be("FOOBAR".getBytes.toList)
+
+    unfangledReq.cookie("auth-token") match {
+      case Some(c) =>
+        c.getName should be("auth-token")
+        c.getValue should be("7039")
+      case None =>
+        fail("Did not parse cookie correctly")
+    }
+
 
   }
 }

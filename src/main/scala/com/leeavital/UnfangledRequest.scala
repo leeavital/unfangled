@@ -1,7 +1,8 @@
 package com.leeavital
 
-import org.jboss.netty.handler.codec.http.HttpRequest
+import org.jboss.netty.handler.codec.http.{Cookie, CookieDecoder, HttpRequest}
 import com.leeavital.util.ChannelBufferHelper
+import scala.collection.JavaConversions._
 
 /**
  * Created by lee on 10/4/14.
@@ -21,6 +22,19 @@ class UnfangledRequest(val req: HttpRequest) {
     }
   }
 
+  def cookie(key: String): Option[Cookie] = {
+    cookies.get(key)
+  }
+
   lazy val body = ChannelBufferHelper.extract[String](req.getContent)
   lazy val bytes = ChannelBufferHelper.extract[Array[Byte]](req.getContent)
+
+  lazy val cookies: Map[String, Cookie] = {
+    val rawCookies = req.getHeader("Cookie")
+    val cookies: Set[Cookie] = (new CookieDecoder().decode(rawCookies)).toSet
+    cookies.toList.map {
+      cookie: Cookie =>
+        (cookie.getName, cookie)
+    }.toMap
+  }
 }

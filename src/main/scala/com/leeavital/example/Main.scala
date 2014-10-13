@@ -8,7 +8,7 @@ import com.twitter.util.Throw
 import com.twitter.util.Return
 
 object Main extends App {
-  Unfangled.serve( LoggingFilter ~>  ((MyServer.pf) orElse (StaticServer("webapp"))) ,  port = 5000)
+  Unfangled.serve(LoggingFilter ~> ((MyServer.pf) orElse (StaticServer("webapp"))), port = 5000)
 }
 
 object MyServer extends {
