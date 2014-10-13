@@ -8,19 +8,19 @@ import com.leeavital.util.ChannelBufferHelper
  */
 class ChannelBufferHelperSpec extends FlatSpec with Matchers {
 
-   "ChannelBufferHelper operations" should "be inverse for String" in {
+  "ChannelBufferHelper operations" should "be inverse for String" in {
 
-     val s : String = "FOOBAR12"
+    val s: String = "FOOBAR12"
 
-     val encoded = ChannelBufferHelper.create(s)
-     val decoded = ChannelBufferHelper.extract[String](encoded)
-     decoded should be(s)
-   }
+    val encoded = ChannelBufferHelper.create(s)
+    val decoded = ChannelBufferHelper.extract[String](encoded)
+    decoded should be(s)
+  }
 
 
   it should "be inverse for Array[Byte]" in {
 
-    val s : Array[Byte] = "abc".getBytes
+    val s: Array[Byte] = "abc".getBytes
 
     val encoded = ChannelBufferHelper.create(s)
     val decoded = ChannelBufferHelper.extract[String](encoded)

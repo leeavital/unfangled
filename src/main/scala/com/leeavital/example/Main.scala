@@ -8,14 +8,14 @@ import com.twitter.util.Throw
 import com.twitter.util.Return
 
 object Main extends App {
-  Unfangled.serve( ((MyServer.pf) orElse (StaticServer.serve("webapp"))) ,  port = 5000)
+  Unfangled.serve(((MyServer.pf) orElse (StaticServer.serve("webapp"))), port = 5000)
 }
 
 object MyServer extends {
 
   val pf: Unfangled.Server = {
     case GET(Path("hello" :: name :: Nil)) =>
-      val html = Templates.out(Map("title" -> s"Hello ${name}" ))
+      val html = Templates.out(Map("title" -> s"Hello ${name}"))
 
       html match {
         case Return(html) => UnfangledResponse.html(html).toFuture

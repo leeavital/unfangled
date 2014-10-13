@@ -96,7 +96,7 @@ class RequestUnapplySpec extends FlatSpec with Matchers {
     val unfangledRequest = new UnfangledRequest(respRaw)
 
     unfangledRequest match {
-      case POST(Path("foo"::"bar" :: baz :: Nil)) => baz should be("baz")
+      case POST(Path("foo" :: "bar" :: baz :: Nil)) => baz should be("baz")
       case _ => fail("Nothing")
     }
   }

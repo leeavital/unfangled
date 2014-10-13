@@ -14,8 +14,8 @@ class UnfangledRequest(val req: HttpRequest) {
 
   def uri = req.getUri
 
-  def header(key: String) : Option[String] = {
-    req.getHeader( key ) match {
+  def header(key: String): Option[String] = {
+    req.getHeader(key) match {
       case null => None
       case x => Some(x)
     }

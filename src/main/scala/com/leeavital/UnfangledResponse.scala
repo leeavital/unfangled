@@ -2,8 +2,7 @@ package com.leeavital
 
 import org.jboss.netty.handler.codec.http.{HttpVersion, DefaultHttpResponse, HttpResponse, HttpResponseStatus}
 import collection.mutable.Map
-import org.jboss.netty.buffer.{ChannelBuffer, ByteBufferBackedChannelBuffer}
-import java.nio.ByteBuffer
+import org.jboss.netty.buffer.ChannelBuffer
 import com.twitter.util.Future
 import com.leeavital.util.ChannelBufferHelper
 
@@ -39,12 +38,12 @@ object UnfangledResponse {
   type Status = HttpResponseStatus
 
   def html(html: HtmlString, status: Status = HttpResponseStatus.OK) = {
-    val channelBuffer= ChannelBufferHelper.create(html.s)
+    val channelBuffer = ChannelBufferHelper.create(html.s)
     new UnfangledResponse(channelBuffer, status, Map("Content-Type" -> "text/html"))
   }
 
 
-  def json(json: JsonString, status: Status = HttpResponseStatus.OK ) = {
+  def json(json: JsonString, status: Status = HttpResponseStatus.OK) = {
     val channelBuffer = ChannelBufferHelper.create(json.s)
     new UnfangledResponse(channelBuffer, status, Map("Content-Type" -> "application/json"))
   }
