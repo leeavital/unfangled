@@ -1,12 +1,11 @@
 package com.leeavital
 
-import org.scalatest.{Matchers, FlatSpec}
 import com.leeavital.util.ChannelBufferHelper
 
 /**
  * Created by lee on 10/11/14.
  */
-class ChannelBufferHelperSpec extends FlatSpec with Matchers {
+class ChannelBufferHelperSpec extends UnfangledSpec {
 
   "ChannelBufferHelper operations" should "be inverse for String" in {
 

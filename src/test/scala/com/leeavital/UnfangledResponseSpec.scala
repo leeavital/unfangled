@@ -1,12 +1,11 @@
 package com.leeavital
 
-import org.scalatest.{FlatSpec, Matchers}
 import org.jboss.netty.handler.codec.http.HttpResponseStatus
 
 /**
  * Created by lee on 10/13/14.
  */
-class UnfangledResponseSpec extends FlatSpec with Matchers {
+class UnfangledResponseSpec extends UnfangledSpec {
 
   "UnfangledResponse" should "set content-type headers correctly" in {
     val resp = UnfangledResponse.html(HtmlString("HELLO WORLD"))

@@ -1,17 +1,10 @@
 package com.leeavital
 
-import org.jboss.netty.handler.codec.http._
-import org.junit.runner.RunWith
-import org.scalatest.{Matchers, FlatSpec}
-import org.scalatest.junit.JUnitRunner
-import com.leeavital.requests._
-import scala.Some
+import org.jboss.netty.handler.codec.http.{HttpRequest, HttpMethod, HttpVersion, DefaultHttpRequest}
+import com.leeavital.requests.{PUT, DELETE, GET, POST, Path}
 
-/**
- * Created by lee on 10/5/14.
- */
-@RunWith(classOf[JUnitRunner])
-class RequestUnapplySpec extends FlatSpec with Matchers {
+
+class RequestUnapplySpec extends UnfangledSpec {
 
 
   "POST" should "unapply" in {
