@@ -17,4 +17,17 @@ class UnfangledResponseSpec extends UnfangledSpec {
     resp.toHttpResponse.getStatus.getCode should be(404)
     resp.toHttpResponse.getStatus should be(HttpResponseStatus.NOT_FOUND)
   }
+
+  it should "set cookies correctly" in {
+    val resp = UnfangledResponse.html(HtmlString("Something"), HttpResponseStatus.OK)
+    resp.cookie("cook", "ie")
+
+    resp.toHttpResponse.getHeaders("Set-Cookie").toArray().toSet should be(Set("cook=ie; Secure"))
+  }
+
+  it should "not have an empty Set-Cookie header" in {
+
+    val resp = UnfangledResponse.html(HtmlString("Something"), HttpResponseStatus.OK)
+    resp.toHttpResponse.getHeaders("Set-Cookie").toArray() should be(Array())
+  }
 }
