@@ -5,6 +5,6 @@ libraryDependencies ++= Seq(
   "junit" % "junit" % "4.11" % "test"
 )
 
-scalaVersion := "2.10.1"
+scalaVersion := "2.10.4"
 
 scalacOptions ++= Seq("-feature", "-deprecation", "-language:implicitConversions")
