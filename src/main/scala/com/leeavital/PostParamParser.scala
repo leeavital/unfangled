@@ -12,7 +12,7 @@ trait StringTransform[A] {
  * Parse POST parameters
  * @param request
  */
-case class Params(request: UnfangledRequest) {
+class PostParamParser(request: UnfangledRequest) {
 
   val dec = new HttpPostRequestDecoder(request.req)
 
@@ -51,13 +51,5 @@ case class Params(request: UnfangledRequest) {
       case None => Seq()
     }
   }
-
-  //      datas.map {
-  //      case att: Attribute =>
-  //        Some(att.getValue)
-  //      case _ =>
-  //        None
-  //    }.flatten
-
-
 }
+
