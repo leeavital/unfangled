@@ -38,4 +38,19 @@ class UnfangledRequestSpec extends FlatSpec with Matchers {
 
 
   }
+
+  it should "parse post params correctly" in {
+
+    val rawReq = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.PATCH, "/foo/bar/baz")
+    rawReq.setContent(ChannelBufferHelper.create("a=b&r=4"))
+    val ur = new UnfangledRequest(rawReq)
+
+    val p = Params(ur)
+    p.apply("a") should be(Some("b"))
+    p.apply("r") should be(Some("4"))
+    p.apply("notakey") should be(None)
+
+
+
+  }
 }
