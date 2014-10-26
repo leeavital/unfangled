@@ -1,6 +1,3 @@
 # author Lee Avital
 
 language: java
-
-jdk:
-  - oraclejdk7
