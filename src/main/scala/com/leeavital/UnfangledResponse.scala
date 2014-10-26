@@ -28,9 +28,11 @@ class UnfangledResponse(val content: ChannelBuffer, val status: HttpResponseStat
     }
 
     // take care of cookies
-    val cookieEncoder = new CookieEncoder(true)
-    cookies.map(cookieEncoder.addCookie)
-    r.setHeader("Set-Cookie", cookieEncoder.encode)
+    if(!cookies.isEmpty) {
+      val cookieEncoder = new CookieEncoder(true)
+      cookies.map(cookieEncoder.addCookie)
+      r.setHeader("Set-Cookie", cookieEncoder.encode)
+    }
 
     r
   }
