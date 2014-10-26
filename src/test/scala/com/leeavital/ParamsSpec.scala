@@ -2,6 +2,7 @@ package com.leeavital
 
 import org.jboss.netty.handler.codec.http.{HttpMethod, HttpVersion, DefaultHttpRequest}
 import com.leeavital.util.ChannelBufferHelper
+import com.leeavital.requests.Params
 
 class ParamsSpec extends UnfangledSpec {
 
@@ -11,7 +12,7 @@ class ParamsSpec extends UnfangledSpec {
     rawReq.setContent(ChannelBufferHelper.create("a=b&r=4"))
     val unfangledRequest = new UnfangledRequest(rawReq)
 
-    val p = new PostParamParser(unfangledRequest)
+    val Params(p) = unfangledRequest
     p.get("a") should be(Some("b"))
     p.get("r") should be(Some("4"))
     p.get("notakey") should be(None)
@@ -22,7 +23,7 @@ class ParamsSpec extends UnfangledSpec {
     rawReq.setContent(ChannelBufferHelper.create("arr[]=4&arr[]=6"))
     val unfangledRequest = new UnfangledRequest(rawReq)
 
-    val p = new PostParamParser(unfangledRequest)
+    val Params(p) = unfangledRequest
 
     p.getMulti("arr[]").length should be(2)
     p.getMulti("arr[]").toSet should be(Set("4", "6"))
@@ -33,7 +34,7 @@ class ParamsSpec extends UnfangledSpec {
     rawReq.setContent(ChannelBufferHelper.create("arr[]=4&arr[]=6"))
     val unfangledRequest = new UnfangledRequest(rawReq)
 
-    val p = new PostParamParser(unfangledRequest)
+    val Params(p) = unfangledRequest
     p.getMulti("foo").length should be(0)
   }
 
@@ -42,7 +43,7 @@ class ParamsSpec extends UnfangledSpec {
     rawReq.setContent(ChannelBufferHelper.create("bar=Hello%20World"))
     val unfangledRequest = new UnfangledRequest(rawReq)
 
-    val p = new PostParamParser(unfangledRequest)
+    val Params(p) = unfangledRequest
     p.get("bar") should be( Some("Hello World"))
   }
 }
