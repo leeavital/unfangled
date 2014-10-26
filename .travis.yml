@@ -1,6 +1,5 @@
 # author Lee Avital
 
-language: java
-
-jdk:
-  - oraclejdk7
+language: scala
+scala:
+  - 2.10.4
