@@ -2,7 +2,11 @@ package com.leeavital
 
 import com.twitter.util.{Try, Future}
 import java.net.URL
-import scala.io.{BufferedSource, Source}
+import scala.io.Source
+import javax.activation.MimetypesFileTypeMap
+import com.leeavital.util.ChannelBufferHelper
+import org.jboss.netty.handler.codec.http.HttpResponseStatus
+import scala.collection.mutable.{Map => MutableMap}
 
 /**
  * Created by lee on 10/12/14.
@@ -20,24 +24,25 @@ import scala.io.{BufferedSource, Source}
  */
 object StaticServer {
 
+  val typeMap = new MimetypesFileTypeMap()
+
   def apply(rootPath: String) = {
     val matcher = FileSearcher(rootPath)
     val pf: PartialFunction[UnfangledRequest, Future[UnfangledResponse]] = {
-      case matcher(f) =>
-        //TODO figure out MIME types
-        UnfangledResponse.html(HtmlString(f.mkString)).toFuture
+      case matcher(url) =>
+        val string = Source.fromURL(url).mkString
+        val contentType = typeMap.getContentType(url.getFile)
+        new UnfangledResponse(ChannelBufferHelper.create(string), HttpResponseStatus.OK, MutableMap("Content-Type" -> contentType))
     }
     pf
   }
 
-
   //TODO optional caching
   private case class FileSearcher(root: String) {
-    def unapply(req: UnfangledRequest): Option[BufferedSource] = {
-      for {
-        fileURL: URL <- Try(this.getClass.getClassLoader.getResource(root + req.uri)).toOption
-      } yield Source.fromURL(fileURL)
+    def unapply(req: UnfangledRequest): Option[URL] = {
+      Try(this.getClass.getClassLoader.getResource(root + req.uri)).toOption
     }
+
   }
 
 }
