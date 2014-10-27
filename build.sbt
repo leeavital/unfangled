@@ -1,3 +1,9 @@
+import AssemblyKeys._
+
+assemblySettings
+
+name := "unfangled"
+
 libraryDependencies ++= Seq(
   "com.twitter" %% "finagle-http" % "6.22.0",
   "org.fusesource.scalate" %% "scalate-core" % "1.6.1",

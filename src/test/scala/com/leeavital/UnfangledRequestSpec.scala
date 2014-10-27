@@ -30,10 +30,14 @@ class UnfangledRequestSpec extends FlatSpec with Matchers {
 
     unfangledReq.cookie("auth-token") match {
       case Some(c) =>
-        c.getName should be("auth-token")
-        c.getValue should be("7039")
+        c should be("7039")
       case None =>
         fail("Did not parse cookie correctly")
+    }
+
+    unfangledReq.cookie("not-a-cookie") match {
+      case Some(_) => fail("parsed a cookie")
+      case None =>
     }
 
 

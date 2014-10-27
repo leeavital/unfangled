@@ -22,8 +22,8 @@ class UnfangledRequest(val req: HttpRequest) {
     }
   }
 
-  def cookie(key: String): Option[Cookie] = {
-    cookies.get(key)
+  def cookie(key: String): Option[String] = {
+    cookies.get(key).map(_.getValue)
   }
 
   lazy val body = ChannelBufferHelper.extract[String](req.getContent)
