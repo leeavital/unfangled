@@ -9,7 +9,7 @@ class UnfangledResponseSpec extends UnfangledSpec {
 
   "UnfangledResponse" should "set content-type headers correctly" in {
     val resp = UnfangledResponse.html(HtmlString("HELLO WORLD"))
-    resp.toHttpResponse.getHeader("Content-Type") should be("text/html")
+    resp.toHttpResponse.headers.get("Content-Type") should be("text/html")
   }
 
   it should "set status codes correctly" in {
@@ -22,12 +22,12 @@ class UnfangledResponseSpec extends UnfangledSpec {
     val resp = UnfangledResponse.html(HtmlString("Something"), HttpResponseStatus.OK)
     resp.cookie("cook", "ie")
 
-    resp.toHttpResponse.getHeaders("Set-Cookie").toArray().toSet should be(Set("cook=ie; Secure"))
+    resp.toHttpResponse.headers.getAll("Set-Cookie").toArray().toSet should be(Set("cook=ie; Secure"))
   }
 
   it should "not have an empty Set-Cookie header" in {
 
     val resp = UnfangledResponse.html(HtmlString("Something"), HttpResponseStatus.OK)
-    resp.toHttpResponse.getHeaders("Set-Cookie").toArray() should be(Array())
+    resp.toHttpResponse.headers.getAll("Set-Cookie").toArray() should be(Array())
   }
 }

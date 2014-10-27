@@ -16,7 +16,7 @@ class UnfangledRequest(val req: HttpRequest) {
   def uri = req.getUri
 
   def header(key: String): Option[String] = {
-    req.getHeader(key) match {
+    req.headers.get(key) match {
       case null => None
       case x => Some(x)
     }
@@ -30,7 +30,7 @@ class UnfangledRequest(val req: HttpRequest) {
   lazy val bytes = ChannelBufferHelper.extract[Array[Byte]](req.getContent)
 
   lazy val cookies: Map[String, Cookie] = {
-    val rawCookies = req.getHeader("Cookie")
+    val rawCookies = req.headers.get("Cookie")
     val cookies: Set[Cookie] = (new CookieDecoder().decode(rawCookies)).toSet
     cookies.toList.map {
       cookie: Cookie =>

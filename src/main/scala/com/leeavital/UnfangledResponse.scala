@@ -24,14 +24,14 @@ class UnfangledResponse(val content: ChannelBuffer, val status: HttpResponseStat
     r.setContent(channelBufferedContent)
     headers.foreach {
       case (k, v) =>
-        r.setHeader(k, v)
+        r.headers.add(k, v)
     }
 
     // take care of cookies
     if(!cookies.isEmpty) {
       val cookieEncoder = new CookieEncoder(true)
       cookies.map(cookieEncoder.addCookie)
-      r.setHeader("Set-Cookie", cookieEncoder.encode)
+      r.headers.add("Set-Cookie", cookieEncoder.encode)
     }
 
     r
