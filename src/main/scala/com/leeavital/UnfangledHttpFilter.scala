@@ -11,6 +11,6 @@ class UnfangledHttpFilter extends FinagleFilter[HttpRequest, HttpResponse, Unfan
 
   def apply(req: HttpRequest, service: Service[UnfangledRequest, UnfangledResponse]): Future[HttpResponse] = {
     val unfangledRequest: UnfangledRequest = new UnfangledRequest(req)
-    service(unfangledRequest).map(_.toHttpResponse)
+    service(unfangledRequest).map(_.toHttpResponse(req.getProtocolVersion))
   }
 }

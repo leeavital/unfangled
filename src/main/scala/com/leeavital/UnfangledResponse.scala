@@ -18,8 +18,8 @@ class UnfangledResponse(val content: ChannelBuffer, val status: HttpResponseStat
     headers.put(k, v)
   }
 
-  def toHttpResponse: HttpResponse = {
-    val r: HttpResponse = new DefaultHttpResponse(HttpVersion.HTTP_1_1, status)
+  def toHttpResponse(version: HttpVersion): HttpResponse = {
+    val r: HttpResponse = new DefaultHttpResponse(version, status)
     val channelBufferedContent = content
     r.setContent(channelBufferedContent)
     headers.foreach {
