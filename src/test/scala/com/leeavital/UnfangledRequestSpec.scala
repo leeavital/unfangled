@@ -39,9 +39,18 @@ class UnfangledRequestSpec extends FlatSpec with Matchers {
       case Some(_) => fail("parsed a cookie")
       case None =>
     }
-
-
   }
+
+  it should "handle a cookieless request correctly" in {
+    val rawReq = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.PATCH, "/foo/bar/baz")
+    rawReq.setHeader("Accept", "application/json")
+    rawReq.setContent(ChannelBufferHelper.create("FOOBAR"))
+
+    val unfangledReq = new UnfangledRequest(rawReq)
+    unfangledReq.cookie("not-a-cookie") should be(None)
+  }
+
+
 
 
 }

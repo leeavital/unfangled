@@ -31,10 +31,14 @@ class UnfangledRequest(val req: HttpRequest) {
 
   lazy val cookies: Map[String, Cookie] = {
     val rawCookies = req.headers.get("Cookie")
-    val cookies: Set[Cookie] = (new CookieDecoder().decode(rawCookies)).toSet
-    cookies.toList.map {
-      cookie: Cookie =>
-        (cookie.getName, cookie)
-    }.toMap
+    rawCookies match {
+      case null => Map.empty
+      case cookieStr =>
+        val cookies: Set[Cookie] = (new CookieDecoder().decode(cookieStr)).toSet
+        cookies.toList.map {
+          cookie: Cookie =>
+            (cookie.getName, cookie)
+        }.toMap
+    }
   }
 }
