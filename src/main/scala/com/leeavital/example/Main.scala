@@ -13,16 +13,24 @@ object Main extends App {
 
 object MyServer extends {
 
+  val helloTemplate = { name : String =>
+    HtmlString(s"Hello ${name}")
+  }
+
+  val whoamiTemplate = { name : String =>
+    HtmlString(s"I am ${name}")
+  }
+
+  val  notFound = HtmlString("Idk")
+
   val pf: Unfangled.Server = {
     case GET(Path("hello" :: name :: Nil)) =>
-      val html = Templates.out(Map("title" -> s"Hello ${name}"))
-
-      html match {
-        // set a dummy cookie
-        case Return(html) => UnfangledResponse.html(html).cookie("session", "334232").toFuture
-        case Throw(e) =>
-          println(e.getMessage)
-          UnfangledResponse.html(HtmlString("NOPE"), HttpResponseStatus.INTERNAL_SERVER_ERROR).toFuture
+      val html = helloTemplate(name)
+      UnfangledResponse.html(html).cookie("name", name).toFuture
+    case req @ GET(Path("whoami" :: Nil)) =>
+      req.cookie("name") match {
+        case Some(name) => UnfangledResponse.html(whoamiTemplate(name))
+        case None => UnfangledResponse.html(notFound)
       }
   }
 }
