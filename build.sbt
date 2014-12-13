@@ -13,6 +13,11 @@ libraryDependencies ++= Seq(
 
 scalaVersion := "2.10.4"
 
-scalacOptions ++= Seq("-feature", "-deprecation", "-language:implicitConversions")
+scalacOptions ++= Seq(
+    "-feature",
+    "-deprecation",
+    "-language:implicitConversions",
+    "-Xlint",
+    "-Xfatal-warnings")
 
 version := "0.1.0"
