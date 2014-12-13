@@ -25,7 +25,7 @@ class UnfangledResponseSpec extends UnfangledSpec {
     val resp = UnfangledResponse.html(HtmlString("Something"), HttpResponseStatus.OK)
     resp.cookie("cook", "ie")
 
-    resp.toHttpResponse(version).headers.getAll("Set-Cookie").toArray().toSet should be(Set("cook=ie; Secure"))
+    resp.toHttpResponse(version).headers.getAll("Set-Cookie").toArray().toSet should be(Set("cook=ie; Path=/"))
   }
 
   it should "not have an empty Set-Cookie header" in {

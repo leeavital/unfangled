@@ -29,24 +29,22 @@ class UnfangledResponse(val content: ChannelBuffer, val status: HttpResponseStat
 
     // take care of cookies
     if(!cookies.isEmpty) {
-      val cookieEncoder = new CookieEncoder(true)
-      cookies.map(cookieEncoder.addCookie)
-      r.headers.add("Set-Cookie", cookieEncoder.encode)
+      val cookieEncoder = new CookieEncoder(false)
+      cookies.foreach(cookieEncoder.addCookie)
+      r.headers.add("Set-Cookie", cookieEncoder.encode + "; Path=/")
     }
 
     r
   }
 
-  def cookie(c: Cookie) = {
+  private def addCookie(c: Cookie) = {
     cookies.add(c)
-    this
   }
 
   //TODO figure out sane defaults and add optional params
   def cookie(name: String, value: String) = {
     val c = new DefaultCookie(name, value)
-    c.setSecure(true)
-    cookies.add(c)
+    addCookie(c)
     this
   }
 
