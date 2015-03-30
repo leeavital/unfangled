@@ -1,8 +1,10 @@
 package com.leeavital
 
-import com.twitter.util.{Try, Future}
 import java.net.URL
+import java.io.File
+import java.nio.file.{Path, Paths}
 import scala.io.Source
+import com.twitter.util.{Try, Future}
 import javax.activation.MimetypesFileTypeMap
 import com.leeavital.util.ChannelBufferHelper
 import org.jboss.netty.handler.codec.http.HttpResponseStatus
@@ -29,9 +31,9 @@ object StaticServer {
   def apply(rootPath: String) = {
     val matcher = FileSearcher(rootPath)
     val pf: PartialFunction[UnfangledRequest, Future[UnfangledResponse]] = {
-      case matcher(url) =>
-        val string = Source.fromURL(url).mkString
-        val contentType = typeMap.getContentType(url.getFile)
+      case matcher(file) =>
+        val string = Source.fromFile(file).mkString
+        val contentType = typeMap.getContentType(file)
         new UnfangledResponse(ChannelBufferHelper.create(string), HttpResponseStatus.OK, MutableMap("Content-Type" -> contentType))
     }
     pf
@@ -39,10 +41,13 @@ object StaticServer {
 
   //TODO optional caching
   private case class FileSearcher(root: String) {
-    def unapply(req: UnfangledRequest): Option[URL] = {
-      Try(this.getClass.getClassLoader.getResource(root + req.uri)).toOption
+    val path = Paths.get(root)
+    def unapply(req: UnfangledRequest): Option[File] = {
+      val relPath = path.resolve(req.uri).toString
+      val url = this.getClass.getClassLoader.getResource(relPath)
+      Try(new File(url.getFile)).toOption
     }
-
+  
   }
 
 }
