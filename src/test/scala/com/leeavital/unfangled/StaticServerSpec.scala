@@ -12,7 +12,7 @@ class StaticServerTest extends UnfangledSpec {
 
 
   val version = HttpVersion.HTTP_1_1
-  
+
   def request(path: String, before: DefaultHttpRequest => DefaultHttpRequest = identity) = {
 
     val rawReq = before(new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, path))
@@ -33,7 +33,8 @@ class StaticServerTest extends UnfangledSpec {
     val ss = StaticServer("test_webapp/")
     val req = request("not_a_file.txt")
 
-    intercept[MatchError] {
+    // throwaway to make the compiler happy
+    val x = intercept[MatchError] {
       val resp = ss.apply(req)
     }
   }
@@ -52,9 +53,10 @@ class StaticServerTest extends UnfangledSpec {
     val req = request("test1.txt")
     val resp = ss.apply(req)
 
-    ss.apply(req)
-    ss.apply(req)
-    ss.apply(req)
-    ss.apply(req)
+    // none of these should throw match errors
+    val a = ss.apply(req)
+    val b = ss.apply(req)
+    val c = ss.apply(req)
+    val d = ss.apply(req)
   }
 }
