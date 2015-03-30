@@ -18,6 +18,10 @@ scalacOptions ++= Seq(
     "-deprecation",
     "-language:implicitConversions",
     "-Xlint",
-    "-Xfatal-warnings")
+    "-Xfatal-warnings",
+    "-Ywarn-dead-code",
+    "-Ywarn-numeric-widen",
+    "-Ywarn-value-discard",
+    "-Xfuture")
 
 version := "0.1.0"
