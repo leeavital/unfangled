@@ -5,13 +5,13 @@ assemblySettings
 name := "unfangled"
 
 libraryDependencies ++= Seq(
-  "com.twitter" %% "finagle-http" % "6.22.0",
-  "org.fusesource.scalate" %% "scalate-core" % "1.6.1",
+  "com.twitter" %% "finagle-http" % "6.25.0",
+  "org.scalatra.scalate" % "scalate-core_2.11" % "1.7.1",
   "org.scalatest" %% "scalatest" % "2.2.1" % "test",
   "junit" % "junit" % "4.11" % "test"
 )
 
-scalaVersion := "2.10.4"
+scalaVersion := "2.11.6"
 
 scalacOptions ++= Seq(
     "-feature",
