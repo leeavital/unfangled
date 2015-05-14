@@ -17,7 +17,7 @@ class FilterSpec extends FlatSpec with Matchers {
   }
 
   // this turns a Double => String into an Int => Float
-  object IntDoubler extends Filter[Int, String, Double, Float] {
+  object IntDoubler extends Filter[Double, String, Int, Float] {
     def apply(req: Int, service: PartialFunction[Double, Future[String]]): Future[Float] = {
       val d = req.toDouble
       service(d).map(x => x.toDouble.toFloat * 2)
