@@ -28,26 +28,20 @@ object StaticServer {
 
   val typeMap = new MimetypesFileTypeMap()
 
-  def apply(rootPath: String) = {
-    val matcher = FileSearcher(rootPath)
+  //TODO optional caching
+  def apply(root: String) = {
     val pf: PartialFunction[UnfangledRequest, Future[UnfangledResponse]] = {
-      case matcher(file) =>
-        val string = Source.fromFile(file).mkString
-        val contentType = typeMap.getContentType(file)
-        new UnfangledResponse(ChannelBufferHelper.create(string), HttpResponseStatus.OK, MutableMap("Content-Type" -> contentType))
+      case req => 
+        val maybeResponse = for {
+          uri <- Try(this.getClass.getClassLoader.getResource(root + req.uri))
+          string <- Try(Source.fromURL(uri).mkString)
+          contentType = typeMap.getContentType(uri.getFile)
+          response = new UnfangledResponse(ChannelBufferHelper.create(string), HttpResponseStatus.OK, MutableMap("Content-Type" -> contentType))
+        } yield response
+
+        // HACK: MatchError is not a good way to go to the next partial function
+        maybeResponse.getOrElse(throw new MatchError(root))
     }
     pf
   }
-
-  //TODO optional caching
-  private case class FileSearcher(root: String) {
-    val path = Paths.get(root)
-    def unapply(req: UnfangledRequest): Option[File] = {
-      val relPath = path.resolve(req.uri).toString
-      val url = this.getClass.getClassLoader.getResource(relPath)
-      Try(new File(url.getFile)).toOption
-    }
-  
-  }
-
 }
