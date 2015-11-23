@@ -5,3 +5,7 @@ out/
 *.iws
 *.ipr
 *.iml
+*.sw[op]
+tags
+target/
+
